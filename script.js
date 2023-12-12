@@ -1,12 +1,14 @@
 const dict = [];
 const sevenLetterWords = [];
 const possibleWords = [];
+let reqLetter = "";
 const score = document.getElementById("score");
 const found = document.getElementById("found");
 const attempt = document.getElementById("atempt");
 const display = document.getElementById("display");
 const letters = document.getElementById("letters");
 const newTry = document.getElementById("new-try");
+const shuffle = document.getElementById("shuffle");
 newTry.addEventListener("click", inputWord);
 const currentLetters = [];
 const wordsFound = [];
@@ -37,28 +39,22 @@ function pickLetters() {
   let randomiser = Math.random();
   let indexNo = Math.floor(sevenLetterWords.length * randomiser);
   let sourceWord = sevenLetterWords[indexNo];
+  console.log(sourceWord);
   for (let i = 0; i < sourceWord.length; i++) {
     if (!currentLetters.includes(sourceWord.charAt(i))) {
       currentLetters.push(sourceWord.charAt(i));
     }
   }
-  currentLetters.sort();
-  for (let i = 0; i < currentLetters.length; i++) {
-    let newbtn = document.createElement("button");
-    newbtn.innerHTML = currentLetters[i].toUpperCase();
-    newbtn.addEventListener("click", inputLetter);
-    letters.append(newbtn);
-  }
-
-  let req = letters.firstElementChild;
-  req.setAttribute("id", "required");
+  let req = currentLetters[Math.floor(Math.random() * 6)];
+  reqLetter = req.toUpperCase();
+  createButtons(currentLetters, reqLetter);
 }
 
 function checkWords() {
   for (let word of dict) {
     if (compare(word, currentLetters)) {
       maxScore += calculateScore(word);
-      possibleWords.push(word);
+      possibleWords.push(word.toUpperCase());
     } else {
       continue;
     }
@@ -71,7 +67,7 @@ function compare(str, arr) {
       return false;
     }
   }
-  if (!str.includes(arr[0])) {
+  if (!str.includes(reqLetter.toLowerCase())) {
     return false;
   }
   return true;
@@ -83,20 +79,20 @@ function inputLetter(e) {
 }
 
 function inputWord() {
-  let newWord = display.value.toLowerCase();
+  let newWord = display.value;
   display.value = "";
-  if (!newWord.includes(currentLetters[0])) {
+  if (!newWord.includes(reqLetter)) {
     alert("Missing required letter");
   } else if (newWord.length < 4) {
     alert("Too short");
   } else if (wordsFound.includes(newWord)) {
     alert("already found");
   } else if (possibleWords.includes(newWord)) {
-    points += calculateScore(newWord);
+    points += calculateScore(newWord.toLowerCase());
     score.innerText = "Score: " + points;
     updateList(newWord);
   } else {
-    alert("Sorry, " + newWord.toUpperCase() + " is not in our dictionary.");
+    alert("Sorry, " + newWord + " is not in our dictionary.");
   }
 }
 
@@ -114,7 +110,7 @@ function updateList(word) {
   let list = document.createElement("ul");
   for (let i = 0; i < wordsFound.length; i++) {
     let newitem = document.createElement("li");
-    newitem.innerText = wordsFound[i].toUpperCase();
+    newitem.innerText = wordsFound[i];
     list.append(newitem);
   }
   found.append(list);
@@ -160,8 +156,33 @@ window.addEventListener("keyup", (e) => {
     display.value += e.key.toUpperCase();
   }
   else if (e.key === "Enter") {
+    newTry.blur();
     inputWord();
   }
 })
+
+shuffle.addEventListener("click", () => {
+  createButtons(currentLetters, reqLetter);
+  shuffle.blur();
+})
+
+function createButtons(arr, req) {
+  for (let i = currentLetters.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    let k = currentLetters[i];
+    currentLetters[i] = currentLetters[j];
+    currentLetters[j] = k;
+}
+  letters.innerHTML = "";
+  for (let i = 0; i < arr.length; i++) {
+    let newbtn = document.createElement("button");
+    newbtn.innerHTML = arr[i].toUpperCase();
+    if (newbtn.innerHTML === req) {
+      newbtn.setAttribute("id", "required");
+    }
+    newbtn.addEventListener("click", inputLetter);
+    letters.append(newbtn);
+  }
+}
 
 importDictionary();

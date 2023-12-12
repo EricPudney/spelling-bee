@@ -47,6 +47,14 @@ centre,
   gap: 1rem;
 }
 
+#shuffle {
+  position: relative;
+  top: 25vh;
+  width: 30%;
+  margin-left: 35%;
+  margin-right: 35%;
+}
+
 #attempt {
   position: relative;
   top: 10vh;
@@ -54,7 +62,10 @@ centre,
 
 #new-try {
   width: 4rem;
-  height: 3rem;
+  height: 3rem; 
+}
+
+#shuffle, #new-try {
   background-color: rgb(97, 143, 28);
   cursor: pointer;
   border: none;
@@ -63,7 +74,7 @@ centre,
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
-#new-try:hover {
+#new-try:hover, #shuffle:hover {
   background-color: rgb(138, 212, 27);
   border: 0.1rem solid black;
 }
