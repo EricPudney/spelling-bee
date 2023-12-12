@@ -1,0 +1,80 @@
+button {
+  width: 40px;
+  height: 40px;
+}
+
+#required {
+  background-color: yellow;
+}
+
+body {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background-color: rgb(216, 213, 207);
+}
+
+centre {
+  grid-column: 2 / 3;
+}
+
+left {
+  grid-column: 1 / 2;
+}
+
+centre,
+#attempt {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}
+
+#display {
+  user-select: none;
+  padding: 0.3rem;
+  height: 0.8rem;
+  width: 7.5rem;
+  margin-bottom: 1rem;
+}
+
+#letters {
+  position: relative;
+  top: 20vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+#attempt {
+  position: relative;
+  top: 10vh;
+}
+
+#new-try {
+  width: 4rem;
+  height: 3rem;
+  background-color: rgb(97, 143, 28);
+  cursor: pointer;
+  border: none;
+  align-self: center;
+  border-radius: 1rem;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+#new-try:hover {
+  background-color: rgb(138, 212, 27);
+  border: 0.1rem solid black;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0.2rem;
+  padding: 0;
+  column-count: 3;
+  column-gap: 1rem;
+  column-rule-style: solid;
+  column-rule-width: 1px;
+  column-width: 30%;
+}
