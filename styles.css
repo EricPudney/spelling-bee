@@ -13,15 +13,18 @@ body {
   background-color: rgb(216, 213, 207);
 }
 
-centre {
+#centre {
   grid-column: 2 / 3;
 }
 
-left {
+#left {
   grid-column: 1 / 2;
 }
 
-centre,
+#right {
+  grid-column: 3 / 4;
+}
+
 #attempt {
   display: flex;
   flex-direction: column;
@@ -88,4 +91,14 @@ ul {
   column-rule-style: solid;
   column-rule-width: 1px;
   column-width: 30%;
+}
+
+.pangram {
+  font-weight: bolder;
+}
+
+#congrats {
+  font-size: 2rem;
+  text-align: center;
+  height: 2rem;
 }

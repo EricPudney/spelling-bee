@@ -1,14 +1,26 @@
 const dict = [];
 const sevenLetterWords = [];
 const possibleWords = [];
+const rankValues = [
+  { title: "Beginner", value: 0 },
+  { title: "Good Start", value: 0 },
+  { title: "Moving Up", value: 0 },
+  { title: "Good", value: 0 },
+  { title: "Solid", value: 0 },
+  { title: "Nice", value: 0 },
+  { title: "Great", value: 0 },
+  { title: "Amazing", value: 0 },
+  { title: "Genius", value: 0 },
+];
 let reqLetter = "";
-const score = document.getElementById("score");
 const found = document.getElementById("found");
 const attempt = document.getElementById("atempt");
 const display = document.getElementById("display");
 const letters = document.getElementById("letters");
 const newTry = document.getElementById("new-try");
 const shuffle = document.getElementById("shuffle");
+const congrats = document.getElementById("congrats");
+const ranks = document.getElementById("ranks");
 newTry.addEventListener("click", inputWord);
 const currentLetters = [];
 const wordsFound = [];
@@ -59,6 +71,24 @@ function checkWords() {
       continue;
     }
   }
+  renderRanks(maxScore);
+}
+
+function renderRanks(pts) {
+  let header = document.createElement("tr");
+  header.innerHTML = "<th>Rank</th><th>Points</th>";
+  ranks.append(header);
+  let baseline = pts * 0.025
+  for (let i=8; i >= 0; i--) {
+    rankValues[i].value = baseline * i;
+    let newrow = document.createElement("tr");
+    let newrank = document.createElement("td");
+    let newpts = document.createElement("td");
+    newrank.innerText = rankValues[i].title;
+    newpts.innerText = Math.round(rankValues[i].value);
+    newrow.append(newrank, newpts);
+    ranks.append(newrow);
+  }
 }
 
 function compare(str, arr) {
@@ -89,10 +119,31 @@ function inputWord() {
     alert("already found");
   } else if (possibleWords.includes(newWord)) {
     points += calculateScore(newWord.toLowerCase());
-    score.innerText = "Score: " + points;
+    checkPangram(newWord.toLowerCase())
+      ? (congrats.innerText = "***Pangram!***")
+      : (congrats.innerText = congratMsg(newWord.length));
+    setTimeout(() => {
+      congrats.innerText = "";
+    }, 1500);
     updateList(newWord);
+    updateScore(points);
   } else {
     alert("Sorry, " + newWord + " is not in our dictionary.");
+  }
+}
+
+function congratMsg(score) {
+  switch (score) {
+    case 4:
+      return "Well done!";
+    case 5:
+      return "Great!";
+    case 6:
+      return "Awesome!";
+    case 7:
+      return "Brilliant!!";
+    default:
+      return "Amazing!!!";
   }
 }
 
@@ -111,9 +162,16 @@ function updateList(word) {
   for (let i = 0; i < wordsFound.length; i++) {
     let newitem = document.createElement("li");
     newitem.innerText = wordsFound[i];
+    if (checkPangram(wordsFound[i].toLowerCase())) {
+      newitem.setAttribute("class", "pangram");
+    }
     list.append(newitem);
   }
   found.append(list);
+}
+
+function updateScore(pts) {
+  // TODO
 }
 
 function checkPangram(word) {
@@ -151,20 +209,19 @@ window.addEventListener("keyup", (e) => {
     let text = display.value;
     let newtext = text.slice(0, text.length - 1);
     display.value = newtext;
-  }
-  else if (currentLetters.includes(e.key)) {
+  } else if (currentLetters.includes(e.key)) {
     display.value += e.key.toUpperCase();
-  }
-  else if (e.key === "Enter") {
+    e.key.blur();
+  } else if (e.key === "Enter") {
     newTry.blur();
     inputWord();
   }
-})
+});
 
 shuffle.addEventListener("click", () => {
   createButtons(currentLetters, reqLetter);
   shuffle.blur();
-})
+});
 
 function createButtons(arr, req) {
   for (let i = currentLetters.length - 1; i > 0; i--) {
@@ -172,7 +229,7 @@ function createButtons(arr, req) {
     let k = currentLetters[i];
     currentLetters[i] = currentLetters[j];
     currentLetters[j] = k;
-}
+  }
   letters.innerHTML = "";
   for (let i = 0; i < arr.length; i++) {
     let newbtn = document.createElement("button");
