@@ -23,6 +23,9 @@ body {
 
 #right {
   grid-column: 3 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #attempt {
@@ -101,4 +104,27 @@ ul {
   font-size: 2rem;
   text-align: center;
   height: 2rem;
+}
+
+#ranks {
+  border: none;
+  width: 16vw;
+}
+
+#score {
+  height: 1vh;
+  margin-top: 1vh;
+  margin-bottom: 4vh;
+  font-weight: bold;
+}
+
+.highlight {
+  background-color: yellow;
+  border-radius: 10rem;
+  font-weight: bold;
+  color: navy;
+}
+
+.r-align {
+  text-align: right;
 }

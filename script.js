@@ -20,6 +20,7 @@ const letters = document.getElementById("letters");
 const newTry = document.getElementById("new-try");
 const shuffle = document.getElementById("shuffle");
 const congrats = document.getElementById("congrats");
+const score = document.getElementById("score");
 const ranks = document.getElementById("ranks");
 newTry.addEventListener("click", inputWord);
 const currentLetters = [];
@@ -84,6 +85,7 @@ function renderRanks(pts) {
     let newrow = document.createElement("tr");
     let newrank = document.createElement("td");
     let newpts = document.createElement("td");
+    newpts.setAttribute("class", "r-align");
     newrank.innerText = rankValues[i].title;
     newpts.innerText = Math.round(rankValues[i].value);
     newrow.append(newrank, newpts);
@@ -171,7 +173,16 @@ function updateList(word) {
 }
 
 function updateScore(pts) {
-  // TODO
+  score.innerHTML = "Your score: " + points;
+  ranks.innerHTML = "";
+  renderRanks(maxScore);
+  for (let i=8; i >= 0; i--) {
+    if (pts >= rankValues[i].value) {
+      let newscore = ranks.children[9 - i];
+      newscore.setAttribute("class", "highlight");
+      return;
+    }
+  }
 }
 
 function checkPangram(word) {
@@ -211,7 +222,7 @@ window.addEventListener("keyup", (e) => {
     display.value = newtext;
   } else if (currentLetters.includes(e.key)) {
     display.value += e.key.toUpperCase();
-    e.key.blur();
+    e.target.blur();
   } else if (e.key === "Enter") {
     newTry.blur();
     inputWord();
