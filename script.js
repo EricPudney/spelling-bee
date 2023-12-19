@@ -81,7 +81,7 @@ function renderRanks(pts) {
   ranks.append(header);
   let baseline = pts * 0.025
   for (let i=8; i >= 0; i--) {
-    rankValues[i].value = baseline * i;
+    rankValues[i].value = Math.floor(baseline * i);
     let newrow = document.createElement("tr");
     let newrank = document.createElement("td");
     let newpts = document.createElement("td");
